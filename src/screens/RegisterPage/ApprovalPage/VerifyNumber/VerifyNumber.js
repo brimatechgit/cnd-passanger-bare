@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { View, Text, TextInput, Pressable, Image } from 'react-native';
 import {Card} from 'react-native-paper';
-import { Checkbox } from '@react-native-community/checkbox';
+import  Checkbox  from '@react-native-community/checkbox';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconIonic from 'react-native-vector-icons/Ionicons';

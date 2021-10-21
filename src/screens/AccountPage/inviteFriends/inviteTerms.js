@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import { View, Text, Pressable, CheckBox } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
+import  Checkbox  from '@react-native-community/checkbox';
 import Icon from 'react-native-vector-icons/Fontisto';
 import Button from '../../../compnents/Button/Button';
 

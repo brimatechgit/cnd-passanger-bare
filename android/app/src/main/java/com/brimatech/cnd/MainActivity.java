@@ -1,4 +1,4 @@
-package com.cnd;
+package com.brimatech.cnd;
 
 import com.facebook.react.ReactActivity;
 

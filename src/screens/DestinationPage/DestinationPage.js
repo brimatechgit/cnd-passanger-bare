@@ -98,7 +98,7 @@ const DestinationSearch = (props) => {
               >
             {errorMessage}
           </Snackbar>
-                <TouchableOpacity onPress={checkNavigation} style={styles.button}>
+                <TouchableOpacity onPress={checkNavigation} style={[styles.button, {marginVertical:25}]}>
                         
                         <Text style={{color: 'teal', fontSize: 15}}>Continue</Text>
                     
