@@ -94,7 +94,7 @@ const VerifyNumber = props => {
             </View>
 
             <View style={{justifyContent: 'center', alignItems: 'center', elevation: 5, }}>
-                        <Pressable style={styles.button} onPress={() => props.navigation.navigate(RegistrationVerification)}>
+                        <Pressable style={styles.button} onPress={() => props.navigation.navigate('RegistrationVerification')}>
                             <Text style={{color: 'teal', fontSize: 20, top:'1%'}}>Continue</Text>
                         </Pressable>
                     </View>

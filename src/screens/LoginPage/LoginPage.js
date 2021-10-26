@@ -44,8 +44,9 @@ const LoginPage = props => {
             <Card style={{elevation: 5, borderRadius: 25, width:Dimensions.get('window').width- 450}}>
             <View style={{flexDirection: 'row'}}>
 
+            
             <DropDownPicker
-                            style={{borderWidth: 0, borderRadius: 25}}
+                            style={{width: 80, borderWidth: 0, borderRadius: 25}}
                                 open={open}
                                 value={value}
                                 items={items}
@@ -57,10 +58,10 @@ const LoginPage = props => {
             <TextInput
                                     style={{borderBottomColor: 'teal',
                                     borderWidth: 0,
-                                    width: 520,
+                                    width: 100,
                                     paddingBottom: 5,
                                     margin: 10,
-                                right: 200}}
+                                right: 280}}
                                     onChange={onChangeMobile}
                                     value={mobile}
                                     placeholder='Mobile' 
