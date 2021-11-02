@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Pressable, Image, Dimensions } from 'react-native';
+import { View, Text, TextInput, Pressable, Image, Dimensions, StyleSheet } from 'react-native';
 import {Button, Card, Snackbar}from 'react-native-paper';
 import  Icon  from 'react-native-vector-icons/MaterialIcons';
 import  IconIon  from 'react-native-vector-icons/Ionicons';
@@ -10,6 +10,8 @@ import BottomHomeNav from '../../../compnents/BottomHomeNav/BottomHomeNav';
 import ConfirmCard from '../../../compnents/ConfirmCard/CornfirmCard';
 import ConfirmPickUp from '../../../compnents/ConfirmPickUp/ConfirmPickUp';
 import ConfirmPickUpPage from './ConfirmPickUpPage/ConfirmPickUpPage';
+import axios from 'axios';
+import { WebView } from 'react-native-webview';
 // import Button from '../../../compnents/Button/Button';
 
 
@@ -28,13 +30,63 @@ const CardDetailsPage = props => {
     const [cardNum, onChangeCardNum] = React.useState("");
     const [expDate, onChangeExpDate] = React.useState("");
     const [cvv, onChangeCvv] = React.useState("");
+    
+    const [isFill, setIsFill] = React.useState(false);
+    const [_payReqId, setPayReqId] = React.useState(null);
+    const [_checksum, setChecksum] = React.useState(null);
+    const [_transStatus, setTransStatus] = React.useState(null);
+  
+    const RunRequrest = () => {
+      var config = {
+        method: 'get',
+        url: 'https://paygaterafaywork.000webhostapp.com/Api/test.php?orderamount=80000',
+        headers: {}
+      };
+  
+      axios(config)
+        .then(function (response) {
+          const data = JSON.stringify(response.data);
+          const payReqId = data.split('&')[1].split('PAY_REQUEST_ID=')[1];
+          const checksum = data.split('&')[3].split('CHECKSUM=')[1].replace('"',
+            "");
+  
+          setPayReqId(payReqId);
+          setChecksum(checksum);
+          setIsFill(true);
+          console.log(payReqId, checksum);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+  
+  
+  
+    }
+  
+   const handleWebViewNavigationStateChange = newNavState => {
+      const { url } = newNavState;
+      if (!url) return;
+      if (url.includes('?status=1')) {
+        props.navigation.navigate("ConfirmPickUpPage")
+        setTransStatus("Your transaction is successfull");
+        setIsFill(false);
+      }
+  
+      if (url.includes('?status=2')) {
+        setTransStatus("Your transaction is failed");
+        setIsFill(false)
+      }
+  
+    };
 
     const validator = () => {
         
         if(cvv != '' && expDate != '' && cardNum != '' && cardName != ''){
             // props.navigation.navigate("ConfirmPickUpPage")
-            props.navigation.navigate("PaymentPage")
+            // props.navigation.navigate("PaymentPage")
             //integrate paygate  payments here
+
+            RunRequrest()
 
         }else {
           // setErrorMsg('street name and num not given');
@@ -45,7 +97,14 @@ const CardDetailsPage = props => {
 }
 
     return ( 
-        <View style={{flex:1, padding: 15}}>
+        <React.Fragment>
+        { isFill ? <WebView
+          style={styling.container}
+          source={{ uri: `https://paygaterafaywork.000webhostapp.com/Api/testnew.php?PAY_REQUEST_ID=${_payReqId}&CHECKSUM=${_checksum}` }}
+          onNavigationStateChange={handleWebViewNavigationStateChange}
+          />
+        
+        : <View style={{flex:1, padding: 15}}>
             <Text style={{fontSize: 22, fontWeight: 'bold', color: 'teal', paddingVertical:10}}>Add Card Details</Text>
 
             <Card style={{borderRadius: 25, elevation: 10, height: 300, padding: 15}}>
@@ -199,8 +258,18 @@ const CardDetailsPage = props => {
             >
             {errorMessage}
           </Snackbar> */}
-        </View>
+        </View>}
+        </React.Fragment>
      );
 }
  
+const styling = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });
+
 export default CardDetailsPage;
