@@ -30,6 +30,10 @@ const RegisterPage = props => {
         {label: '+28', value: '+28'}
       ]);
 
+      function getUserName(documentSnapshot) {
+        return documentSnapshot.get('email');
+      }
+
 
       async function createUser () {
         if (sname != '' && number != '' && fname != '' && email != '' && password != '') {
@@ -39,7 +43,7 @@ const RegisterPage = props => {
             //else proceed to register user
 
             //creates users with passw and email
-            console.log(sname.toString())
+           
                 auth()
                 .createUserWithEmailAndPassword(email.toString(), password.toString())
                 .then(() => {
@@ -51,19 +55,38 @@ const RegisterPage = props => {
                         name: fname.toString(),
                         surname: sname.toString(),
                         email: email.toString(),
-                        phone: parseInt(number),
+                        phone: number,
                         }).then((res) =>{
                             firestore().collection('users').doc(res.id).update({
                                 id: res.id,
                             })
                             userid = res.id;
+
+                            // console.log(res.get())
                         })
-                        
-                        const userDocument = firestore().collection('users').doc(userid);
-                        console.log(userDocument.get('name'))
-                        props.navigation.navigate('ApprovalPage', {
-                            userDoc: userDocument,
-                        })
+
+                        firestore()
+                        .collection('users')
+                        .where('phone', '==', number)
+                        .get()
+                        .then(querySnapshot => {
+                            querySnapshot.forEach(documentSnapshot => {
+                            //displays user id and document field data
+                            console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+
+                            
+                            //fetch user email
+                            console.log(documentSnapshot.get("email"))
+
+                                props.navigation.navigate('ApprovalPage', {
+                                    userDoc: documentSnapshot,
+                                })
+                            });
+                        });
+                        // console.log(userDocument.get())
+                        // props.navigation.navigate('ApprovalPage', {
+                        //     userDoc: userDocument,
+                        // })
                     })
                 .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
@@ -169,6 +192,7 @@ const RegisterPage = props => {
                         {/* <Button text='Sign Up' navPage='ApprovalPage' navigation={props.navigation} ></Button> */}
 
                         <Button title='Sign Up' type='outline' buttonStyle={{borderRadius: 25, }} onPress={createUser}></Button>
+                        {/* <Button title='Sign Up' type='outline' buttonStyle={{borderRadius: 25, }} onPress={()=> console.log(parseInt( number))}></Button> */}
                     </View>
 
                     <View style={{height: 15}}></View>

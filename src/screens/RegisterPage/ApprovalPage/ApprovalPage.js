@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, Text, Pressable, Image } from 'react-native';
 import  {Card } from 'react-native-paper';
-import Button from '../../../compnents/Button/Button';
+import { Button } from 'react-native-elements';
 import LoginPage from '../../LoginPage/LoginPage';
 import styles from './styles';
 import VerifyNumber from './VerifyNumber/VerifyNumber';
 
-const ApprovalPage = props => {
+const ApprovalPage = ({route, navigation}) => {
 
+    const { userDoc } = route.params;
    
     return ( 
         <View style={{justifyContent: 'center', padding: 25, alignItems: 'center'}}>
@@ -39,7 +40,13 @@ source={require('../../../assets/images/WOOHOO.png')} />
                 </Pressable>
             </View> */}
 
-            <Button text='Continue' navPage='VerifyNumber' navigation={props.navigation} ></Button>
+            {/* <Button text='Continue' navPage='VerifyNumber' navigation={props.navigation} userDoc={props.userDoc}></Button> */}
+
+            <Button title='Continue' type='outline' buttonStyle={{borderRadius: 25, }} onPress={() => {
+                navigation.navigate('VerifyNumber', {
+                    userDoc: userDoc
+                })
+            }}></Button>
             
         </View>
      );

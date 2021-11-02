@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, TextInput, Pressable,Image, Dimensions, } from 'react-native';
 import  Checkbox  from '@react-native-community/checkbox';
 import {Card} from 'react-native-paper';
@@ -21,7 +21,11 @@ import {
 
 const CELL_COUNT = 6;
 
-const LoginPage = props => {
+const LoginPage = (props) => {
+
+  
+
+  // const { userDoc } = route.params;
 
     const [cellValue, setCellValue] = useState('');
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
@@ -50,6 +54,7 @@ const LoginPage = props => {
 
 
       async function signInWithPhoneNumber(phoneNumber) {
+        auth().currentUser.delete();
         const confirmation = await auth().signInWithPhoneNumber(phoneNumber).catch(function(error) {
             console.log(error)
         });
@@ -61,22 +66,64 @@ const LoginPage = props => {
 
 
       async function confirmCode() {
+
+
         try {
           await confirm.confirm(cellValue);
+          // firestore()
+          //   .collection('Users')
+          //   // Filter results
+          //   .where('phone', '==', parseInt(mobile))
+          //   .get()
+          //   .then(querySnapshot => {
+          //       /* ... */
+          //       // querySnapshot.docChanges
+          //   });
+
           firestore()
-            .collection('Users')
-            // Filter results
-            .where('phone', '==', parseInt(mobile))
-            .get()
-            .then(querySnapshot => {
-                /* ... */
-                // querySnapshot.docChanges
-            });
-          props.navigation.navigate('HomePage')
+                        .collection('users')
+                        .where('phone', '==', mobile)
+                        .get()
+                        .then(querySnapshot => {
+                            querySnapshot.forEach(documentSnapshot => {
+                            //displays user id and document field data
+                            console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+
+                            
+                            //fetch user email
+                            console.log(documentSnapshot.get("email"))
+
+                                props.navigation.navigate('HomePage', {
+                                    userDoc: documentSnapshot,
+                                })
+                            });
+                        });
+          // props.navigation.navigate('HomePage', {
+          //   userDoc: userDoc
+          // })
         } catch (error) {
-          console.log('Invalid code.');
+          console.log('Invalid code.', error);
         }
       }
+
+
+      useEffect( () => {
+        auth().onAuthStateChanged( (user) => {
+            if (user) {
+                // Obviously, you can add more statements here, 
+                //       e.g. call an action creator if you use Redux. 
+    
+                // navigate the user away from the login screens: 
+                // props.navigation.navigate("PermissionsScreen");
+                console.log(user)
+            } 
+            else 
+            {
+                // reset state if you need to  
+                // dispatch({ type: "reset_user" });
+            }
+        });
+    }, []);
 
       if(!confirm ) { return ( 
 
@@ -182,7 +229,7 @@ source={require('../../assets/images/Google.png')} />
             <View style={{height: 15}}></View>
             <Text style={{color: 'teal'}}>An SMS code was sent to</Text>
 
-            <Text style={{fontWeight: 'bold', paddingVertical:10}}>+27 45 935 9064</Text>
+            <Text style={{fontWeight: 'bold', paddingVertical:10}}>{'+27 '+mobile.toString()}</Text>
 
             <Text style={{color:'teal'}}>Edit Mobile Numbers</Text>
 

@@ -21,7 +21,9 @@ import {
 
 const CELL_COUNT = 6;
 
-const VerifyNumber = props => {
+const VerifyNumber = ({ route ,props}) => {
+
+    const { userDoc } = route.params;
 
     const [OTP, onChangeOTP] = React.useState();
     const [OTP2, onChangeOTP2] = React.useState();
@@ -54,8 +56,36 @@ const VerifyNumber = props => {
 
 
       async function signInWithPhoneNumber(phoneNumber) {
-        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-        setConfirm(confirmation);
+        // firestore()
+        //     .collection('users')
+        //     .get()
+        //     .where('phone', '==', phoneNumber)
+        //     .then(querySnapshot => {
+        //         if(querySnapshot.size == 0){
+        //             console.log('Number not found, Please check number')
+        //         }else {
+        //             const confirmation = auth().signInWithPhoneNumber(phoneNumber);
+        //             setConfirm(confirmation);
+        //         }
+        //         // console.log('Total users: ', querySnapshot.size);
+
+        //         // querySnapshot.forEach(documentSnapshot => {
+        //         // //displays user id and document field data
+        //         // console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+
+                
+        //         // //fetch user email
+        //         // console.log(documentSnapshot.get("email"))
+        //         // });
+        //     });
+
+        console.log(userDoc.get('phone'))
+
+        if(userDoc.get('phone') == phoneNumber){
+
+            const confirmation = await auth().signInWithPhoneNumber(phoneNumber).catch(function(error){console.log(error)});
+            setConfirm(confirmation);
+        }
         // props.navigation.navigate('RegistrationVerification', {
 
         // })
@@ -65,7 +95,9 @@ const VerifyNumber = props => {
       async function confirmCode() {
         try {
           await confirm.confirm(cellValue);
-          props.navigation.navigate('HomePage')
+          props.navigation.navigate('HomePage', {
+            userDoc: userDoc
+          })
         } catch (error) {
           console.log('Invalid code.');
         }

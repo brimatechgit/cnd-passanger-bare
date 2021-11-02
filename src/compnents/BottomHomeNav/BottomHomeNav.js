@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, Text, Pressable, TouchableOpacity } from 'react-native';
 import DestinationSearch from '../../screens/DestinationPage/DestinationPage';
-import Button from '../Button/Button';
+import { Button } from 'react-native-elements';
 import styles from './styles';
 
 
-const BottomHomeNav = ({navigation}) => {
+const BottomHomeNav = ({navigation, userDoc}) => {
     return ( 
         <View style={styles.container}>
             <View style={{alignItems:'center'}}>
                 {/* get username here */}
-                <Text style={{fontSize: 22, color: 'teal', fontWeight: 'bold'}}>Hi J,</Text>
+                <Text style={{fontSize: 22, color: 'teal', fontWeight: 'bold'}}>{'Hi '+userDoc.get('name')}</Text>
                 <View style={{height: 10}}></View> 
                 <View style={{width: '75%'}}>
 
@@ -25,7 +25,9 @@ const BottomHomeNav = ({navigation}) => {
                         
                     </TouchableOpacity> */}
 
-                    <Button text='Where Are You?' navPage='DestinationSearch' navigation={navigation}></Button>
+                    {/* <Button text='Where Are You?' navPage='DestinationSearch' navigation={navigation}></Button> */}
+
+                    <Button title='Where Are You?' type='outline' buttonStyle={{borderRadius: 25,backgroundColor:'white' }} onPress={() => navigation.navigate('DestinationSearch')}></Button>
             
         </View>
      );

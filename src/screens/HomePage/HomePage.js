@@ -8,12 +8,15 @@ import styles from './styles';
 import AccountPage from '../AccountPage/AccountPage';
 import MapComponent from '../../compnents/MapComponent/MapComponent';
 
-const HomePage = ({navigation, props}) => {
+const HomePage = ({navigation, route}) => {
+
+    const { userDoc } = route.params;
+
     return ( 
         <View >
             <MapComponent navigation={navigation}></MapComponent>
            
-            <BottomHomeNav navigation={navigation}></BottomHomeNav>
+            <BottomHomeNav navigation={navigation} userDoc={userDoc}></BottomHomeNav>
 
         </View>
      );
