@@ -110,6 +110,25 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
 
+
+    codeFieldRoot: {},
+    cell: {
+        width: 55,
+        height: 55,
+        lineHeight: 38,
+        fontSize: 35,
+        borderWidth: 1,
+        borderRadius:5,
+        paddingTop: 10,
+        margin: 3,
+        alignItems: 'center',
+        textAlign:'center',
+        borderColor: '#00000030',
+        textAlign: 'center',
+    },
+    focusCell: {
+        borderColor: '#000',
+    },
     
 
 })

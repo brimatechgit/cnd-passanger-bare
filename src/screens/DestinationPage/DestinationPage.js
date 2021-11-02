@@ -118,6 +118,7 @@ const DestinationSearch = (props) => {
           placeholder="Where from?"
           onPress={(data, details = null) => {
             setOriginPlace({data, details});
+            console.log('details are ' + details.geometry.location.lat)
           }}
           
           enablePoweredByContainer={false}

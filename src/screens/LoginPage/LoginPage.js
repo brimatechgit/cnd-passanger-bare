@@ -8,11 +8,29 @@ import IconIonic from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import Verification from './Verification/Verification';
 import TermsPage from '../TermsPage/TermsPage';
-import Button from '../../compnents/Button/Button';
+import { Button } from 'react-native-elements';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
+import {
+    CodeField,
+    Cursor,
+    useBlurOnFulfill,
+    useClearByFocusCell,
+  } from 'react-native-confirmation-code-field';
+
+const CELL_COUNT = 6;
 
 const LoginPage = props => {
 
-    const [mobile, onChangeMobile] = React.useState('');
+    const [cellValue, setCellValue] = useState('');
+    const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+    const [cellprops, getCellOnLayoutHandler] = useClearByFocusCell({
+        value,
+        setValue,
+    });
+
+    const [mobile, onChangeMobile] = React.useState();
     const [isSelected, setSelection] = useState(false);
 
 
@@ -24,7 +42,45 @@ const LoginPage = props => {
         {label: '+28', value: '+28'}
       ]);
 
-    return ( 
+
+    // If null, no SMS has been sent
+  const [confirm, setConfirm] = useState(null);
+
+  const [code, setCode] = useState('');
+
+
+      async function signInWithPhoneNumber(phoneNumber) {
+        const confirmation = await auth().signInWithPhoneNumber(phoneNumber).catch(function(error) {
+            console.log(error)
+        });
+        setConfirm(confirmation);
+        // props.navigation.navigate('RegistrationVerification', {
+
+        // })
+      }
+
+
+      async function confirmCode() {
+        try {
+          await confirm.confirm(cellValue);
+          firestore()
+            .collection('Users')
+            // Filter results
+            .where('phone', '==', parseInt(mobile))
+            .get()
+            .then(querySnapshot => {
+                /* ... */
+                // querySnapshot.docChanges
+            });
+          props.navigation.navigate('HomePage')
+        } catch (error) {
+          console.log('Invalid code.');
+        }
+      }
+
+      if(!confirm ) { return ( 
+
+        //check db user collection for the number the user is entering, phone numbers should be unique
         <View style={{flex:1, padding: 20}}>
 
             
@@ -46,28 +102,28 @@ const LoginPage = props => {
 
             
             <DropDownPicker
-                            style={{width: 80, borderWidth: 0, borderRadius: 25}}
-                                open={open}
-                                value={value}
-                                items={items}
-                                setOpen={setOpen}
-                                setValue={setValue}
-                                setItems={setItems}
-                                placeholder='+27'
-                                />
-            <TextInput
-                                    style={{borderBottomColor: 'teal',
-                                    borderWidth: 0,
-                                    width: 100,
-                                    paddingBottom: 5,
-                                    margin: 10,
-                                right: 280}}
-                                    onChange={onChangeMobile}
-                                    value={mobile}
-                                    placeholder='Mobile' 
-                                    placeholderTextColor='teal'
-                                    keyboardType='number-pad' 
-                                />
+                                style={{width: 80, borderWidth: 0, borderRadius: 25}}
+                                    open={open}
+                                    value={value}
+                                    items={items}
+                                    setOpen={setOpen}
+                                    setValue={setValue}
+                                    setItems={setItems}
+                                    placeholder='+27'
+                                    />
+                <TextInput
+                                        style={{borderBottomColor: 'teal',
+                                        borderWidth: 0,
+                                        width: 100,
+                                        paddingBottom: 5,
+                                        margin: 10,
+                                    right: 250}}
+                                        onChangeText={onChangeMobile}
+                                        value={mobile}
+                                        placeholder='Mobile' 
+                                        placeholderTextColor='teal'
+                                        keyboardType='number-pad' 
+                                    />
             </View>
             </Card>
 
@@ -106,12 +162,76 @@ source={require('../../assets/images/Google.png')} />
                     </View> */}
 
 
-            <Button text='Continue' navPage='Verification' navigation={props.navigation}></Button>
-
+            {/* <Button text='Continue' navPage='Verification' navigation={props.navigation}></Button> */}
+                    
+            <View style={{justifyContent: 'center', alignItems: 'center', elevation: 5, }}>
+                            <Pressable style={styles.button} onPress={() => signInWithPhoneNumber('+27'+mobile.toString())}>
+                                <Text style={{color: 'teal', fontSize: 20, top:'1%'}}>Continue</Text>
+                            </Pressable>
+                        </View>
            
+            {/* <Button title='Continue' type='outline' buttonStyle={{borderRadius: 25, }} onPress={() => signInWithPhoneNumber('+27'+mobile.toString())}></Button> */}
         </View>
      
+     ); }
+
+
+     return ( 
+        <View style={{flex:1, padding: 20}}>
+            <Text style={styles.text}>Enter Verification Code</Text>
+            <View style={{height: 15}}></View>
+            <Text style={{color: 'teal'}}>An SMS code was sent to</Text>
+
+            <Text style={{fontWeight: 'bold', paddingVertical:10}}>+27 45 935 9064</Text>
+
+            <Text style={{color:'teal'}}>Edit Mobile Numbers</Text>
+
+            <View style={{height: 15}}></View>
+            <View style={{flexDirection: 'row', right: '3%'}}>
+            <CodeField
+                ref={ref}
+                {...props}
+                // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
+                value={cellValue}
+                onChangeText={setCellValue}
+                cellCount={CELL_COUNT}
+                rootStyle={styles.codeFieldRoot}
+                keyboardType="number-pad"
+                textContentType="oneTimeCode"
+                renderCell={({index, symbol, isFocused}) => (
+                <Text
+                    key={index}
+                    style={[styles.cell, isFocused && styles.focusCell]}
+                    onLayout={getCellOnLayoutHandler(index)}>
+                    {symbol || (isFocused ? <Cursor /> : null)}
+                </Text>
+                )}
+            />
+            </View>
+            
+            <View style={{height: 15}}></View>
+            <Card style={styles.button} onPress={() => console.log('sign in')}>
+                      
+                            <Text style={{color: 'teal', fontSize: 15}}>Resend Code</Text>
+                        
+                {/* <Button text='Resend Code' navPage='' navigation={props.navigation}></Button> */}
+                </Card>
+                <View style={{height: 35}}></View>
+                    {/* <View style={{justifyContent: 'center', alignItems: 'center', elevation: 5,}}>
+                        <Pressable style={styles.buttonBig} onPress={() => props.navigation.navigate(HomePage)}>
+                            <Text style={{color: 'teal', fontSize: 20}}>Continue</Text>
+                        </Pressable>
+                    </View> */}
+
+                    {/* <Button text='Continue' navPage='HomePage' navigation={props.navigation}></Button> */}
+
+                    <Button title='Continue' type='outline' buttonStyle={{borderRadius: 25, }} onPress={() => confirmCode()}></Button>
+        </View>
+     
+     
      );
+
+
 }
  
 export default LoginPage;

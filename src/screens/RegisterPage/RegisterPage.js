@@ -12,8 +12,10 @@ import firestore from '@react-native-firebase/firestore';
 
 import auth from '@react-native-firebase/auth';
 
+
 const RegisterPage = props => {
 
+    const userid = '';
     const [number, onChangeNumber] = React.useState();
     const [sname, onChangeSname] = React.useState("");
     const [fname, onChangeFname] = React.useState("");
@@ -31,6 +33,11 @@ const RegisterPage = props => {
 
       async function createUser () {
         if (sname != '' && number != '' && fname != '' && email != '' && password != '') {
+
+            //should check db if the phone number is already in there
+            //if it is, error, and tell user cant register
+            //else proceed to register user
+
             //creates users with passw and email
             console.log(sname.toString())
                 auth()
@@ -49,6 +56,13 @@ const RegisterPage = props => {
                             firestore().collection('users').doc(res.id).update({
                                 id: res.id,
                             })
+                            userid = res.id;
+                        })
+                        
+                        const userDocument = firestore().collection('users').doc(userid);
+                        console.log(userDocument.get('name'))
+                        props.navigation.navigate('ApprovalPage', {
+                            userDoc: userDocument,
                         })
                     })
                 .catch(error => {
@@ -83,7 +97,7 @@ const RegisterPage = props => {
                                 />
                                 <TextInput
                                     style={[styles.input, {width:Dimensions.get('window').width - 250}]}
-                                    onChange={onChangeSname}
+                                    onChangeText={onChangeSname}
                                     value={sname}
                                     placeholder='Surname' 
                                     placeholderTextColor='teal' 
@@ -102,7 +116,7 @@ const RegisterPage = props => {
                                 <View style={{height: 50}}></View>
                                 <TextInput
                                     style={[styles.inputLong, {width:Dimensions.get('window').width - 550}]}
-                                    onChange={onChangePassword}
+                                    onChangeText={onChangePassword}
                                     value={password}
                                     secureTextEntry
                                     placeholder='Password' 
@@ -130,7 +144,7 @@ const RegisterPage = props => {
                                     paddingBottom: 5,
                                     margin: 10,
                                     justifyContent: 'flex-start'}}
-                                    onChange={onChangeNumber}
+                                    onChangeText={onChangeNumber}
                                     value={number}
                                     placeholder='Mobile' 
                                     placeholderTextColor='teal'
@@ -154,7 +168,7 @@ const RegisterPage = props => {
                     <View style={{alignItems:'center'}}>
                         {/* <Button text='Sign Up' navPage='ApprovalPage' navigation={props.navigation} ></Button> */}
 
-                        <Button title='Register' type='outline' buttonStyle={{borderRadius: 25, }} onPress={() => console.log(fname.toString())}></Button>
+                        <Button title='Sign Up' type='outline' buttonStyle={{borderRadius: 25, }} onPress={createUser}></Button>
                     </View>
 
                     <View style={{height: 15}}></View>

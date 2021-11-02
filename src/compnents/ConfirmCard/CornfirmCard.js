@@ -11,6 +11,8 @@ const ConfirmCard = ({origin, destination, or, props}) => {
 
     const navigation = useNavigation();
 
+    console.log(origin.details.geometry.location)
+
     return ( 
         <View style={styles.container}>
             <View style={{alignItems:'center'}}>
