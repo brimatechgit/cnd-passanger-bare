@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable, TouchableOpacity } from 'react-native';
+import { View, Text, Pressable, TouchableOpacity, Dimensions } from 'react-native';
 import DestinationSearch from '../../screens/DestinationPage/DestinationPage';
 import { Button } from 'react-native-elements';
 import styles from './styles';
@@ -27,7 +27,8 @@ const BottomHomeNav = ({navigation, userDoc}) => {
 
                     {/* <Button text='Where Are You?' navPage='DestinationSearch' navigation={navigation}></Button> */}
 
-                    <Button title='Where Are You?' type='outline' buttonStyle={{borderRadius: 25,backgroundColor:'white' }} onPress={() => navigation.navigate('DestinationSearch')}></Button>
+                    <Button title='Where Are You?' titleStyle={{color:'teal'}} type='outline' buttonStyle={{borderRadius: 25,borderColor:'teal', backgroundColor:'white', width: Dimensions.get('screen').width - 140 }} onPress={() => navigation.navigate('DestinationSearch')}></Button>
+                    {/* <Button title='Sign Up' titleStyle={{color:'teal'}} type='outline' buttonStyle={{borderRadius: 25,borderColor:'teal', backgroundColor:'white', width: Dimensions.get('screen').width - 140 }} onPress={createUser}></Button> */}
             
         </View>
      );

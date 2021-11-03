@@ -299,7 +299,9 @@ source={require('../../assets/images/Google.png')} />
 
                     {/* <Button text='Continue' navPage='HomePage' navigation={props.navigation}></Button> */}
 
-                    <Button title='Continue' type='outline' buttonStyle={{borderRadius: 25, }} onPress={() => confirmCode()}></Button>
+                    <Button title='Continue' titleStyle={{color:'teal'}} type='outline' buttonStyle={{borderRadius: 25,borderColor:'teal', backgroundColor:'white', width: Dimensions.get('screen').width - 140 }} onPress={() => confirmCode()}></Button>
+
+                    {/* <Button title='Sign Up' titleStyle={{color:'teal'}} type='outline' buttonStyle={{borderRadius: 25,borderColor:'teal', backgroundColor:'white', width: Dimensions.get('screen').width - 140 }} onPress={createUser}></Button>  */}
         </View>
      
      

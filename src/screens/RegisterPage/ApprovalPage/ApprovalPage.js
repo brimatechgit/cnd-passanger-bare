@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable, Image } from 'react-native';
+import { View, Text, Pressable, Image, Dimensions } from 'react-native';
 import  {Card } from 'react-native-paper';
 import { Button } from 'react-native-elements';
 import LoginPage from '../../LoginPage/LoginPage';
@@ -42,11 +42,14 @@ source={require('../../../assets/images/WOOHOO.png')} />
 
             {/* <Button text='Continue' navPage='VerifyNumber' navigation={props.navigation} userDoc={props.userDoc}></Button> */}
 
-            <Button title='Continue' type='outline' buttonStyle={{borderRadius: 25, }} onPress={() => {
+            <Button title='Continue' titleStyle={{color:'teal'}} type='outline' buttonStyle={{borderRadius: 25,borderColor:'teal', backgroundColor:'white', width: Dimensions.get('screen').width - 140}} onPress={() => {
                 navigation.navigate('VerifyNumber', {
                     userDoc: userDoc
                 })
             }}></Button>
+
+
+{/* <Button title='Sign Up' titleStyle={{color:'teal'}} type='outline' buttonStyle={{borderRadius: 25,borderColor:'teal', backgroundColor:'white', width: Dimensions.get('screen').width - 140 }} onPress={createUser}></Button>  */}
             
         </View>
      );

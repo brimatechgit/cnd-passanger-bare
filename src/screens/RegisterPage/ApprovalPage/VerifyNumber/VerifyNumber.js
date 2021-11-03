@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, TextInput, Pressable, Image } from 'react-native';
+import { View, Text, TextInput, Pressable, Image, Dimensions } from 'react-native';
 import {Card} from 'react-native-paper';
 import  Checkbox  from '@react-native-community/checkbox';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -306,7 +306,9 @@ const VerifyNumber = ({ route ,props, navigation}) => {
                     </View> */}
 
                     {/* <Button text='Continue' navPage='HomePage' navigation={props.navigation}></Button> */}
-                    <Button title='Continue' type='outline' buttonStyle={{borderRadius: 25, }} onPress={() => confirmCode()}></Button>
+                    <Button title='Continue' titleStyle={{color:'teal'}} type='outline' buttonStyle={{borderRadius: 25,borderColor:'teal', backgroundColor:'white', width: Dimensions.get('screen').width - 140  }} onPress={() => confirmCode()}></Button>
+
+                    {/* <Button title='Sign Up' titleStyle={{color:'teal'}} type='outline' buttonStyle={{borderRadius: 25,borderColor:'teal', backgroundColor:'white', width: Dimensions.get('screen').width - 140 }} onPress={createUser}></Button> */}
         </View>
      );
 }

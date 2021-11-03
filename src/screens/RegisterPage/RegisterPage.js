@@ -192,14 +192,14 @@ const RegisterPage = ({navigation,props}) => {
                     <View style={{alignItems:'center'}}>
                         {/* <Button text='Sign Up' navPage='ApprovalPage' navigation={props.navigation} ></Button> */}
 
-                        <Button title='Sign Up' type='outline' buttonStyle={{borderRadius: 25, }} onPress={createUser}></Button>
+                        <Button title='Sign Up' titleStyle={{color:'teal'}} type='outline' buttonStyle={{borderRadius: 25,borderColor:'teal', backgroundColor:'white', width: Dimensions.get('screen').width - 140 }} onPress={createUser}></Button>
                         {/* <Button title='Sign Up' type='outline' buttonStyle={{borderRadius: 25, }} onPress={()=> console.log(parseInt( number))}></Button> */}
                     </View>
 
                     <View style={{height: 15}}></View>
                     <View style={{ justifyContent:'center', alignItems: 'center',}}>
                     <Text style={{textAlign: 'center', fontWeight:'bold'}}>Already have an account? 
-                        <Pressable onPress={() => props.navigation.navigate(LoginPage)}><Text style={{color: 'teal', top: 4 }}> Sign In</Text></Pressable></Text>
+                        <Pressable onPress={() => props.navigation.navigate('LoginPage')}><Text style={{color: 'teal', top: 4 }}> Sign In</Text></Pressable></Text>
                 </View>
 
 
