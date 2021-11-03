@@ -13,7 +13,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 
-const RegisterPage = props => {
+const RegisterPage = ({navigation,props}) => {
 
     const userid = '';
     const [number, onChangeNumber] = React.useState();
@@ -78,8 +78,9 @@ const RegisterPage = props => {
                             //fetch user email
                             console.log(documentSnapshot.get("email"))
 
-                                props.navigation.navigate('ApprovalPage', {
+                                navigation.navigate('ApprovalPage', {
                                     userDoc: documentSnapshot,
+                                    navigation: navigation
                                 })
                             });
                         });

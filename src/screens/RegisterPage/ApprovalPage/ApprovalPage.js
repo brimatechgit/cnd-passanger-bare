@@ -6,7 +6,7 @@ import LoginPage from '../../LoginPage/LoginPage';
 import styles from './styles';
 import VerifyNumber from './VerifyNumber/VerifyNumber';
 
-const ApprovalPage = ({route, navigation}) => {
+const ApprovalPage = ({route, props, navigation}) => {
 
     const { userDoc } = route.params;
    

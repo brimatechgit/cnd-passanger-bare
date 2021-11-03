@@ -9,7 +9,7 @@ const ConnectDriverPage = ({navigation}) => {
     return ( 
         <View>
             <MapComponent navigation={navigation}></MapComponent>
-            <ConnectDriver navigation={navigation} name='Tshepang'></ConnectDriver>
+            <ConnectDriver navigation={navigation} name='Brima Driver'></ConnectDriver>
             {/* <DriverLoad></DriverLoad> */}
         </View>
      );

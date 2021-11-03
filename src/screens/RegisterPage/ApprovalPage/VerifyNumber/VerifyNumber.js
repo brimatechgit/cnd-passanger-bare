@@ -21,10 +21,10 @@ import {
 
 const CELL_COUNT = 6;
 
-const VerifyNumber = ({ route ,props}) => {
+const VerifyNumber = ({ route ,props, navigation}) => {
 
     const { userDoc } = route.params;
-
+    
     const [OTP, onChangeOTP] = React.useState();
     const [OTP2, onChangeOTP2] = React.useState();
     const [OTP3, onChangeOTP3] = React.useState();
@@ -81,11 +81,11 @@ const VerifyNumber = ({ route ,props}) => {
 
         console.log(userDoc.get('phone'))
 
-        if(userDoc.get('phone') == phoneNumber){
+        // if(userDoc.get('phone') == phoneNumber){
 
             const confirmation = await auth().signInWithPhoneNumber(phoneNumber).catch(function(error){console.log(error)});
             setConfirm(confirmation);
-        }
+        // }
         // props.navigation.navigate('RegistrationVerification', {
 
         // })
@@ -93,13 +93,23 @@ const VerifyNumber = ({ route ,props}) => {
 
 
       async function confirmCode() {
+
+        navigation.navigate('HomePage', {
+            userDoc: userDoc
+          })
+
         try {
+            console.log(cellValue)
           await confirm.confirm(cellValue);
           props.navigation.navigate('HomePage', {
             userDoc: userDoc
           })
         } catch (error) {
           console.log('Invalid code.');
+
+          //remove this, temp
+        //   await confirm.confirm(cellValue);
+          
         }
       }
 

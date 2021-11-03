@@ -54,7 +54,8 @@ const LoginPage = (props) => {
 
 
       async function signInWithPhoneNumber(phoneNumber) {
-        auth().currentUser.delete();
+        // auth().currentUser.delete();
+        auth().signOut()
         const confirmation = await auth().signInWithPhoneNumber(phoneNumber).catch(function(error) {
             console.log(error)
         });
@@ -66,9 +67,31 @@ const LoginPage = (props) => {
 
 
       async function confirmCode() {
+        //temp remove
+        firestore()
+                        .collection('users')
+                        .where('phone', '==', mobile)
+                        .get()
+                        .then(querySnapshot => {
+                            querySnapshot.forEach(documentSnapshot => {
+                            //displays user id and document field data
+                            console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
 
+                            
+                            //fetch user email
+                            console.log(documentSnapshot.get("email"))
+
+                                props.navigation.navigate('HomePage', {
+                                    userDoc: documentSnapshot,
+                                })
+                            });
+                        });
 
         try {
+            //temp 
+            
+
+
           await confirm.confirm(cellValue);
           // firestore()
           //   .collection('Users')
@@ -79,7 +102,7 @@ const LoginPage = (props) => {
           //       /* ... */
           //       // querySnapshot.docChanges
           //   });
-
+            
           firestore()
                         .collection('users')
                         .where('phone', '==', mobile)
@@ -115,7 +138,11 @@ const LoginPage = (props) => {
     
                 // navigate the user away from the login screens: 
                 // props.navigation.navigate("PermissionsScreen");
-                console.log(user)
+                console.log(user);
+                // auth().signOut()
+            //     props.navigation.navigate('HomePage', {
+            //       userDoc: user,
+            //   })
             } 
             else 
             {

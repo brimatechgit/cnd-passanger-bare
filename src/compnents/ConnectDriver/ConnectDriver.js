@@ -11,7 +11,7 @@ import { IconButton } from 'react-native-paper';
 const ConnectDriver = (props) => {
 
     const carType = 'CnD-Motor'
-    const carRegistration = '55 SNH'
+    const carRegistration = '55DHR01 GP'
 
     const [isModalVisible, setModalVisible] = React.useState(false);
     const [isChatVisible, setChatVisible] = React.useState(false);
@@ -159,7 +159,7 @@ const ConnectDriver = (props) => {
                                 <View>
                                     {/* DRIVER user chats go here */}
 
-                                    <Text>Test chat here</Text>
+                                    <Text style={{fontSize: 15, color: 'red'}}>Free Tier limit reached</Text>
 
                                 </View>
 
