@@ -47,6 +47,7 @@ const PaymentPage = (props) => {
         const { url } = newNavState;
         if (!url) return;
         if (url.includes('?status=1')) {
+          //when sucecessful change req status to complete
             props.navigation.navigate("ConfirmPickUpPage")
           setTransStatus("Your transaction is successfull");
           setIsFill(false);

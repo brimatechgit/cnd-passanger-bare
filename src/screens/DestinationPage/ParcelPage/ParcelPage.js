@@ -9,13 +9,16 @@ import styles from './styles';
 import ParcelMapComponent from '../../../compnents/ParcelMap/ParcelMapComponent';
 
 
-const ParcelPage = ({navigation}) => {
+const ParcelPage = ({navigation, route}) => {
+
+    const {reqDoc} = route.params;
+
     return ( 
         <View>
 
             <ParcelMapComponent navigation={navigation}></ParcelMapComponent>
             
-            <RequestCard navigation={navigation}></RequestCard>
+            <RequestCard navigation={navigation} reqDoc={reqDoc}></RequestCard>
 
             {/* <BottomHomeNav></BottomHomeNav> */}
         </View>

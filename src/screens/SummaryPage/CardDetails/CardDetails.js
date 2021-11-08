@@ -13,10 +13,13 @@ import ConfirmPickUpPage from './ConfirmPickUpPage/ConfirmPickUpPage';
 import axios from 'axios';
 import { WebView } from 'react-native-webview';
 // import Button from '../../../compnents/Button/Button';
+import firestore from '@react-native-firebase/firestore';
 
 
 
-const CardDetailsPage = props => {
+const CardDetailsPage = ({props, route}) => {
+
+    const {reqDoc, navigation} = route.params;
 
     const [visible, setVisible] = React.useState(false);
 
@@ -67,7 +70,19 @@ const CardDetailsPage = props => {
       const { url } = newNavState;
       if (!url) return;
       if (url.includes('?status=1')) {
-        props.navigation.navigate("ConfirmPickUpPage")
+        //successful transaction, update status
+        firestore()
+          .collection('requests')
+          .doc(reqDoc)
+          .update({
+            reqstatus: 'Paid',
+          })
+          .then(() => {
+          console.log('Updated req to paid');
+          });
+        navigation.navigate("ConfirmPickUpPage", {
+          reqDoc:reqDoc
+        })
         setTransStatus("Your transaction is successfull");
         setIsFill(false);
       }

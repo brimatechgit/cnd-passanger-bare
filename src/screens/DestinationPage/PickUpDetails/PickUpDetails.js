@@ -3,12 +3,17 @@ import { View, Text, TextInput, Pressable,Image } from 'react-native';
 import {Card, Snackbar} from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker'
 import styles from './styles';
+import  {useNavigation}  from '@react-navigation/native';
 import Icon  from 'react-native-vector-icons/Ionicons';
 import PickUpInstructions from './PickUpInstructions/PickUpInstructionsPage';
 import DropOffDetails from '../DropOffDetails/DropOfDetails';
+import firestore from '@react-native-firebase/firestore';
 
-const PickUpLocationDetails = props => {
+const PickUpLocationDetails = ({props, route}) => {
 
+    const {reqDoc} = route.params;
+
+    const navigation = useNavigation();
 
     const [visible, setVisible] = React.useState(false);
 
@@ -53,14 +58,47 @@ const PickUpLocationDetails = props => {
       const validator = () => {
           if(value == 'House'){
               if(streetName != ''){
-                props.navigation.navigate("DropOffDetails")
+                firestore()
+                    .collection('requests')
+                    .doc(reqDoc)
+                    .update({
+                        pickupDetails: {
+                            buildingType: value,
+                            streetName:streetName,
+                        },
+                        
+                    })
+                    .then(() => {
+                    console.log('Updated req');
+                    });
+                navigation.navigate("DropOffDetails", {
+                    reqDoc: reqDoc,
+                })
+                
+
               }else {
                 // setErrorMsg('street name and num not given');
                 setVisible(!visible)
               }
           } else {
               if(streetName != '' && complex != ''){
-                props.navigation.navigate("DropOffDetails")
+                firestore()
+                    .collection('requests')
+                    .doc(reqDoc)
+                    .update({
+                        pickupDetails: {
+                            buildingType: value,
+                            complexType: complex,
+                            streetName:streetName,
+                        },
+                        
+                    })
+                    .then(() => {
+                    console.log('Updated req');
+                    });
+                navigation.navigate("DropOffDetails", {
+                    reqDoc: reqDoc,
+                })
               } else {  
                 // setErrorMsg('Cant submit empty field');
                 setVisible(!visible)

@@ -7,10 +7,14 @@ import Icon  from 'react-native-vector-icons/Ionicons';
 import DropOffInstruction from './DropOffInstructions/DropOffInstructions';
 import SummaryPage from '../../SummaryPage/SummaryPage';
 import ParcelPage from '../ParcelPage/ParcelPage';
+import  {useNavigation}  from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
 
-const DropOffDetails = props => {
+const DropOffDetails = ({props, route}) => {
 
+    const {reqDoc} = route.params;
 
+    const navigation = useNavigation();
     
     const [visible, setVisible] = React.useState(false);
 
@@ -53,14 +57,46 @@ const DropOffDetails = props => {
       const validator = () => {
         if(value == 'House'){
             if(streetName != ''){
-                props.navigation.navigate("ParcelPage")
+                firestore()
+                    .collection('requests')
+                    .doc(reqDoc)
+                    .update({
+                        dropOffDetails: {
+                            buildingType: value,
+                            streetName:streetName,
+                            recipient: contact,
+                        },
+                    })
+                    .then(() => {
+                    console.log('Updated req');
+                    });
+                navigation.navigate("ParcelPage", {
+                    reqDoc:reqDoc,
+                })
             }else {
               // setErrorMsg('street name and num not given');
               setVisible(!visible)
             }
         } else {
             if(streetName != '' && complex != ''){
-                props.navigation.navigate("ParcelPage")
+
+                firestore()
+                    .collection('requests')
+                    .doc(reqDoc)
+                    .update({
+                        dropOffDetails: {
+                            buildingType: value,
+                            complexType: complex,
+                            streetName:streetName,
+                            recipient: contact,
+                        },
+                    })
+                    .then(() => {
+                    console.log('Updated req');
+                    });
+                navigation.navigate("ParcelPage", {
+                    reqDoc
+                })
             } else {  
               // setErrorMsg('Cant submit empty field');
               setVisible(!visible)

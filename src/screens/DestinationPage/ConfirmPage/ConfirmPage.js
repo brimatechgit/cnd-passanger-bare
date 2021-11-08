@@ -10,13 +10,13 @@ const ConfirmPage = ({navigation, props}) => {
 
     const route = useRoute();
 
-    const {originPlace, destinationPlace,} = route.params
+    const {originPlace, destinationPlace, userDoc} = route.params
 
     return ( 
         <View>
             <ConfirmMap navigation={navigation} origin={originPlace} destination={destinationPlace}></ConfirmMap>
             {/* <MapComponent navigation={navigation} origin={originPlace} destination={destinationPlace}></MapComponent> */}
-            <ConfirmCard navigation={navigation} origin={originPlace} destination={destinationPlace} ></ConfirmCard>
+            <ConfirmCard navigation={navigation} origin={originPlace} destination={destinationPlace} userDoc={userDoc}></ConfirmCard>
         </View>
      );
 }

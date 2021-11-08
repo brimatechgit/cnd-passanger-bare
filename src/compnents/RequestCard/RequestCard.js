@@ -8,9 +8,11 @@ import Modal from "react-native-modal";
 import styles from './styles';
 import SummaryPage from '../../screens/SummaryPage/SummaryPage';
 import { validate } from 'compare-versions';
+import firestore from '@react-native-firebase/firestore';
 
-const RequestCard = props => {
+const RequestCard = ({props, route, reqDoc, navigation}) => {
 
+    // const {reqDoc} = route.params 
 
     const [visible, setVisible] = React.useState(false);
 
@@ -41,6 +43,7 @@ const RequestCard = props => {
         setModalVisibleSmall(!isModalVisibleSmall);
 
         console.log(parcel)
+        console.log(reqDoc)
       };
     const toggleParcel = () => {
         setBkg('gray')
@@ -49,7 +52,19 @@ const RequestCard = props => {
       const validator = () => {
         
             if(parcel != 'none'){
-                props.navigation.navigate("SummaryPage")
+                firestore()
+                    .collection('requests')
+                    .doc(reqDoc)
+                    .update({
+                       parcelType: parcel,
+                    })
+                    .then(() => {
+                    console.log('Updated parcel');
+                    });
+                navigation.navigate("SummaryPage", {
+                    reqDoc:reqDoc,
+                    navigation: navigation
+                })
             }else {
               // setErrorMsg('street name and num not given');
               setVisible(!visible)
@@ -70,9 +85,9 @@ const RequestCard = props => {
                     {/* dot icon here */}
                     {/* <View style={styles.circle} /> */}
                     <Image 
-style={{width:45, height:45}}
-  resizeMode = 'contain'
-source={require('../../assets/images/CNDbike.png')} />
+                    style={{width:45, height:45}}
+                    resizeMode = 'contain'
+                    source={require('../../assets/images/CNDbike.png')} />
                 
                     
                 <Card style={{elevation: 5, borderRadius: 25, padding:2, width: '85%', margin: 5, backgroundColor: bkgSmall}} onPress={toggleSmallModal}>

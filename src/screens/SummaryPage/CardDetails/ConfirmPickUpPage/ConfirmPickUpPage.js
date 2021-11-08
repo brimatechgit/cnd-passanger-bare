@@ -5,21 +5,32 @@ import ConnectDriver from '../../../../compnents/ConnectDriver/ConnectDriver';
 import DriverLoad from '../../../../compnents/ConnectDriver/DriverLoad';
 import MapComponent from '../../../../compnents/MapComponent/MapComponent';
 import ConnectDriverPage from './ConnectDriverPage/ConnectDriverPage';
+import firestore from '@react-native-firebase/firestore';
 
 
-const ConfirmPickUpPage = ({navigation}) => {
+const ConfirmPickUpPage = ({ navigation,route}) => {
 
-
-
+    const {reqDoc} = route.params;
    
-
 
      useEffect(() => {
         setTimeout(() => {
-            navigation.navigate("ConnectDriverPage")
-        }, 5000);
+            navigation.navigate("ConnectDriverPage", {reqDoc: reqDoc})
+        }, 21000);
       }, []);
 
+
+      //a listner
+
+      function onResult(QuerySnapshot) {
+        console.log('Got Users collection result.');
+      }
+      
+      function onError(error) {
+        console.error(error);
+      }
+
+      firestore().collection('requests').doc(reqDoc).onSnapshot(onResult, onError);
 
     return ( 
         <View>

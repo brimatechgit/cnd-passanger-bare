@@ -21,7 +21,9 @@ const workPlace = {
   geometry: { location: { lat: 48.8496818, lng: 2.2940881 } },
 };
 
-const DestinationSearch = (props) => {
+const DestinationSearch = ({props, route}) => {
+
+  const { userDoc } = route.params;
 
   const [visible, setVisible] = React.useState(false);
 
@@ -43,7 +45,7 @@ const DestinationSearch = (props) => {
       navigation.navigate('ConfirmPage', {
         originPlace,
         destinationPlace,
-        
+        userDoc: userDoc,
       })
     } else {
       setVisible(!visible)

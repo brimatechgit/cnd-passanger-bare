@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, Text, TextInput, Pressable, Image } from 'react-native';
 import { Card,RadioButton } from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker'
@@ -6,12 +6,37 @@ import styles from './styles';
 import  Icon  from 'react-native-vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
 import CardDetailsPage from './CardDetails/CardDetails';
+import firestore from '@react-native-firebase/firestore';
 
-const SummaryPage = props => {
+const SummaryPage = ({props, route}) => {
 
-    const [instruction, onChangeInstruction] = React.useState('');
+    let test = '';
+
+    const {reqDoc, navigation} = route.params;
+
+    const [instruction, onChangeInstruction] = React.useState();
     const [checked, setChecked] = React.useState('No');
 
+    const [request, onChangeReq] = useState()
+    
+    // function getStreet(req) {
+    //     return req.get('parcelType');
+    //   }
+      useEffect(() => {
+          
+          firestore().collection('requests').doc(reqDoc).get().then((req) => {
+            //   getStreet(req)
+
+            console.log(req.data('reqstatus'))
+            test = req.data();
+            // onChangeReq(req.data());
+            // console.log('tesssst '+ test['dropoff']['lat'])
+            console.log('tesssst '+ request['reqstatus'])
+          })
+
+        // console.log('id request is ' + request.id)
+        // console.log('id request ' + request)
+    },[])
 
     return ( 
         <View style={{ padding: 10}}>
@@ -38,6 +63,8 @@ const SummaryPage = props => {
                     </View>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={{color: 'teal', fontSize: 14}}>234 Brima Road, Villy estate 219</Text>
+                        {/* <Text style={{color: 'teal', fontSize: 14}}>{request}</Text> */}
+
                     </View>
                 </View>
 
@@ -98,7 +125,7 @@ source={require('../../assets/images/AddPayment.png')} />
                         <Text style={{color: 'grey', fontWeight:'600', fontSize: 12}}>Credit / Debit Card</Text>
                     </View>
                     <Card style={{...styles.circularIcon, width: 25, height: 25}}>
-                        <Pressable onPress={() => props.navigation.navigate("CardDetailsPage")} style={{justifyContent: 'center', alignItems: 'center', top: 6}}>
+                        <Pressable onPress={() => navigation.navigate("CardDetailsPage", {reqDoc : reqDoc, navigation: navigation})} style={{justifyContent: 'center', alignItems: 'center', top: 6}}>
 
                             <Icon name='plus' size={15}></Icon>
                         </Pressable>

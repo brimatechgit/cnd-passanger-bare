@@ -1,17 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Pressable } from 'react-native';
 import {Button, Card}from 'react-native-paper';
 import  {useNavigation}  from '@react-navigation/native';
 import  Icon  from 'react-native-vector-icons/MaterialIcons';
 import PickUpLocationDetails from '../../screens/DestinationPage/PickUpDetails/PickUpDetails';
 import ConnectDriverPage from '../../screens/SummaryPage/CardDetails/ConfirmPickUpPage/ConnectDriverPage/ConnectDriverPage';
+import firestore from '@react-native-firebase/firestore';
 import styles from './styles';
 
-const ConfirmCard = ({origin, destination, or, props}) => {
+const ConfirmCard = ({origin, destination, or, props, userDoc}) => {
 
     const navigation = useNavigation();
 
+    const [reqDoc, setReqDoc] = useState('');
+
     console.log(origin.details.geometry.location)
+
+
+    const navFunction = () => {
+        firestore()
+            .collection('requests')
+            .add({
+                pickup: origin.details.geometry.location,
+                dropoff: destination.details.geometry.location,
+                userID: userDoc,
+                reqstatus: 'Pending',
+            })
+            .then((res) => {
+                console.log('req created' + res.id);
+                setReqDoc(res.id)
+
+                navigation.navigate("PickUpLocationDetails", {
+                    reqDoc: res.id,
+                })
+            });
+
+            // navigation.navigate("PickUpLocationDetails", {
+            //     reqDoc,
+            // })
+    }
+    // useEffect(() => {
+        
+    // },[])
 
     return ( 
         <View style={styles.container}>
@@ -63,7 +93,7 @@ const ConfirmCard = ({origin, destination, or, props}) => {
 
                 {/* props.navigation.navigate(PickUpLocationDetails) */}
 
-                    <Pressable onPress={() => navigation.navigate("PickUpLocationDetails")} style={styles.button}>
+                    <Pressable onPress={navFunction} style={styles.button}>
                     
                             <Text style={{color: 'teal', fontSize: 15}}>Confirm</Text>
                         

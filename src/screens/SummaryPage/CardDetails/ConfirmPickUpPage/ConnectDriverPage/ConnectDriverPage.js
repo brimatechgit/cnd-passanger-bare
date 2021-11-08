@@ -5,7 +5,11 @@ import DriverLoad from '../../../../../compnents/ConnectDriver/DriverLoad';
 import MapComponent from '../../../../../compnents/MapComponent/MapComponent';
 
 
-const ConnectDriverPage = ({navigation}) => {
+const ConnectDriverPage = ({route}) => {
+
+    const {reqDoc, navigation} = route.params;
+
+
     return ( 
         <View>
             <MapComponent navigation={navigation}></MapComponent>

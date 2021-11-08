@@ -27,7 +27,7 @@ const BottomHomeNav = ({navigation, userDoc}) => {
 
                     {/* <Button text='Where Are You?' navPage='DestinationSearch' navigation={navigation}></Button> */}
 
-                    <Button title='Where Are You?' titleStyle={{color:'teal'}} type='outline' buttonStyle={{borderRadius: 25,borderColor:'teal', backgroundColor:'white', width: Dimensions.get('screen').width - 140 }} onPress={() => navigation.navigate('DestinationSearch')}></Button>
+                    <Button title='Where Are You?' titleStyle={{color:'teal'}} type='outline' buttonStyle={{borderRadius: 25,borderColor:'teal', backgroundColor:'white', width: Dimensions.get('screen').width - 140 }} onPress={() => navigation.navigate('DestinationSearch', {userDoc: userDoc})}></Button>
                     {/* <Button title='Sign Up' titleStyle={{color:'teal'}} type='outline' buttonStyle={{borderRadius: 25,borderColor:'teal', backgroundColor:'white', width: Dimensions.get('screen').width - 140 }} onPress={createUser}></Button> */}
             
         </View>
