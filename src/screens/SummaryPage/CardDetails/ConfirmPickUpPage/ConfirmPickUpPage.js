@@ -11,13 +11,26 @@ import firestore from '@react-native-firebase/firestore';
 const ConfirmPickUpPage = ({ navigation,route}) => {
 
     const {reqDoc} = route.params;
+
+    const MINUTE_MS = 9000;
    
 
-     useEffect(() => {
-        setTimeout(() => {
-            navigation.navigate("ConnectDriverPage", {reqDoc: reqDoc})
-        }, 21000);
-      }, []);
+    useEffect(() => {
+      const interval = setInterval(() => {
+        firestore().collection('requests').doc(reqDoc).get().then( res => {
+              console.log(res.data())
+              if(res.data()['reqstatus'] == 'Accepted') {
+                navigation.navigate("ConnectDriverPage", {
+                  reqDoc: reqDoc,
+                  driverID: res.data()['driverID']['id'],
+                  driverName: res.data()['driverID']['name']
+                })
+              }
+          });
+      }, MINUTE_MS);
+    
+      return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    }, [])
 
 
       //a listner

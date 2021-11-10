@@ -5,15 +5,15 @@ import DriverLoad from '../../../../../compnents/ConnectDriver/DriverLoad';
 import MapComponent from '../../../../../compnents/MapComponent/MapComponent';
 
 
-const ConnectDriverPage = ({route}) => {
+const ConnectDriverPage = ({route, navigation}) => {
 
-    const {reqDoc, navigation} = route.params;
+    const {reqDoc, driverID, driverName} = route.params;
 
 
     return ( 
         <View>
             <MapComponent navigation={navigation}></MapComponent>
-            <ConnectDriver navigation={navigation} name='Brima Driver'></ConnectDriver>
+            <ConnectDriver navigation={navigation} driverID={driverID} reqDoc={reqDoc} driverName={driverName}></ConnectDriver>
             {/* <DriverLoad></DriverLoad> */}
         </View>
      );

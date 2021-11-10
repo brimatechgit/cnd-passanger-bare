@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Pressable } from 'react-native';
+import { View, Text, ActivityIndicator,TextInput, TouchableOpacity, Pressable } from 'react-native';
 import {Button, Card}from 'react-native-paper';
 import  {useNavigation}  from '@react-navigation/native';
 import  Icon  from 'react-native-vector-icons/MaterialIcons';
@@ -13,11 +13,13 @@ const ConfirmCard = ({origin, destination, or, props, userDoc}) => {
     const navigation = useNavigation();
 
     const [reqDoc, setReqDoc] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     console.log(origin.details.geometry.location)
 
 
     const navFunction = () => {
+        setIsLoading(true)
         firestore()
             .collection('requests')
             .add({
@@ -77,31 +79,18 @@ const ConfirmCard = ({origin, destination, or, props, userDoc}) => {
                 </Card>
                 
                 </View>
-                
-                {/* <Button style={{}} onPress={()=> navigation.navigate("PickUpLocationDetails")}>test mee</Button> */}
 
                 <View style={{height: 5}}></View>
 
-
-
-
-                {/* <TouchableOpacity onPress={() => {navigation.navigate(PickUpLocationDetails)}} style={[styles.button, {margin:5}]}>
-                        
-                                        <Text style={{color: 'teal', fontSize: 15}}>Yes, Cancel</Text>
-                                    
-                                    </TouchableOpacity> */}
-
-                {/* props.navigation.navigate(PickUpLocationDetails) */}
-
+                    {isLoading ? 
+                    
+                    <ActivityIndicator color="teal" size="large" /> :
+                    
                     <Pressable onPress={navFunction} style={styles.button}>
                     
                             <Text style={{color: 'teal', fontSize: 15}}>Confirm</Text>
                         
-                    </Pressable>
-
-                    {/* <Button text='Continue' navPage='' ></Button> */}
-                    
-            
+                    </Pressable>}
         </View>
      );
 }

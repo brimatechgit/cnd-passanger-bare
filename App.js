@@ -45,6 +45,7 @@ import InviteTermsPage from './src/screens/AccountPage/inviteFriends/inviteTerms
 
 import CardTnC from './src/screens/SummaryPage/CardDetails/CardTnC';
 import PaymentPage from './src/screens/SummaryPage/CardDetails/paymentPage/PaymentPage';
+import ChatPage from './src/screens/ChatPage/ChatPage';
 
 
 const Stack = createNativeStackNavigator();
@@ -116,6 +117,7 @@ export default function App() {
         <Stack.Screen name="Verification" component={Verification} />
         <Stack.Screen name="ApprovalPage" component={ApprovalPage} />
         <Stack.Screen name="HomePage" component={HomePage} />
+        <Stack.Screen name="ChatPage" component={ChatPage} />
         <Stack.Screen name="TermsPage" component={TermsPage} />
         <Stack.Screen name="TermsAndCo" component={TermsAndCo} />
         <Stack.Screen name="SafetyPage" component={SafetyPage} />

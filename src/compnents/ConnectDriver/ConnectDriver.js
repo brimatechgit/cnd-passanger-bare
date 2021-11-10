@@ -8,7 +8,7 @@ import HomePage from '../../screens/HomePage/HomePage';
 import ChatPage from './ChatPage/ChatPage';
 import { IconButton } from 'react-native-paper';
 
-const ConnectDriver = (props) => {
+const ConnectDriver = ({props, driverID,reqDoc, driverName }) => {
 
     const carType = 'CnD-Motor'
     const carRegistration = '55DHR01 GP'
@@ -57,7 +57,7 @@ const ConnectDriver = (props) => {
                     {/* dot icon here */}
                     <View style={{flexDirection:'column'}}>
                         <View style={styles.leadIcon}><Icon name="person" size={30}></Icon></View>
-                        <Text>{props.name}</Text>      
+                        <Text>{driverName}</Text>      
                     </View>
                     <Pressable onPress={toggleModal} style={{flexDirection:'column', paddingHorizontal: 25}}>
                         <View style={styles.leadIcon}><Icon name="close" color='red' size={30}></Icon></View>
@@ -96,7 +96,7 @@ const ConnectDriver = (props) => {
                                     <Text style={{fontSize: 18, fontWeight:'bold', paddingVertical: 10, color:'red'}}>Cancel Your Pick up</Text>
 
                                     <Text style={{textAlign:'center'}}>
-                                        Are you sure you want to Cancel Your Pick up with {props.name}?
+                                        Are you sure you want to Cancel Your Pick up with {driverName}?
                                     </Text>
                                     
                                     <View style={{ paddingTop:10}}>
